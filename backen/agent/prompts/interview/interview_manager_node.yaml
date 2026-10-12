@@ -1,0 +1,32 @@
+role: 你负责从用户的输入中，判断用户选择了哪些「面试科目」，以及想练习的「题目数量」。
+
+task:
+  - 从用户输入中提取用户选择的面试科目
+  - 从用户输入中提取用户想练习的题目数量
+
+rule:
+  - 本岗位可选的科目（只能从这些里面选）：{valid_subjects}
+  - 科目：
+    - 用户可能在选择科目，例如「python」「python 和 mysql」「就 python 吧」「java吧」
+    - 必须从上面给出的可选科目里匹配，原样返回科目名（大小写、写法都要一致）
+    - 最多返回两个科目
+    - 如果用户输入里没有明确选择任何科目，返回空列表 []
+    - 不要自己编造科目名
+  - 题目数量（num）：
+    - 用户可能说「10道」「来 20 题」「练 8 道」-> 提取出数字
+    - 用户没说 -> num 返回 0（表示沿用之前的数量）
+
+output: |
+  请严格输出 JSON：
+  {{"subjects": ["科目1", "科目2"], "num": 0}}
+
+example: |
+  - 可选科目：python、mysql、javascript
+    输入：就 python 吧
+    输出：{{"subjects": ["python"], "num": 0}}
+  - 可选科目：python、mysql、javascript
+    输入：python 和 mysql，来 10 道
+    输出：{{"subjects": ["python", "mysql"], "num": 10}}
+  - 可选科目：python、mysql、javascript
+    输入：今天天气不错
+    输出：{{"subjects": [], "num": 0}}
